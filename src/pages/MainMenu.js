@@ -11,14 +11,14 @@ const MainMenu = () => {
       }}>
       <View
         style={{
-          height: '60%',
+          height: '50%',
           justifyContent: 'center',
           alignItems: 'center',
         }}>
         <Image source={require('../img/appLogo.png')} />
       </View>
 
-      <View style={{height: '40%'}}>
+      <View style={{height: '50%'}}>
         <ImageBackground
           source={require('../img/waveBackground.png')}
           style={{height: '100%'}}>
