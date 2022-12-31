@@ -1,11 +1,13 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View, Text} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 const MainMenuButton = () => {
+  const navigation = useNavigation();
   return (
     <View
       style={{justifyContent: 'center', alignItems: 'center', height: '100%'}}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('SelectMode')}>
         <View style={styles.button}>
           <Text style={styles.buttonTitle}>Play Game</Text>
         </View>
