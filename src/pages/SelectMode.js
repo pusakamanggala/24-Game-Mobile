@@ -1,6 +1,8 @@
 import React from 'react';
 import {View, Text, Image, ImageBackground} from 'react-native';
 import GameModeButton from '../components/GameModeButton';
+import {CardContext, CardProvider} from '../context/CardContext';
+import {useContext} from 'react';
 
 const SelectMode = () => {
   return (
@@ -11,7 +13,7 @@ const SelectMode = () => {
       }}>
       <View
         style={{
-          height: '60%',
+          height: '50%',
           justifyContent: 'center',
           alignItems: 'center',
         }}>
@@ -29,11 +31,13 @@ const SelectMode = () => {
         </Text>
       </View>
 
-      <View style={{height: '40%'}}>
+      <View style={{height: '50%'}}>
         <ImageBackground
           source={require('../img/waveBackground.png')}
           style={{height: '100%'}}>
-          <GameModeButton />
+          <CardProvider>
+            <GameModeButton />
+          </CardProvider>
         </ImageBackground>
       </View>
     </View>
