@@ -1,7 +1,15 @@
 import React from 'react';
 import {View, Image, Text} from 'react-native';
+import {useNavigation, StackActions} from '@react-navigation/native';
+import {useEffect} from 'react';
 
 const SplashScreens = () => {
+  const navigation = useNavigation();
+  useEffect(() => {
+    setTimeout(() => {
+      navigation.dispatch(StackActions.replace('MainMenu'));
+    }, 3000);
+  }, []);
   return (
     <View
       style={{
