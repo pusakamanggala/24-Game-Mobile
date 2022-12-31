@@ -11,12 +11,12 @@ const CardDeck = () => {
       <View
         style={{
           backgroundColor: '#13C8EF',
-          height: '60%',
+          height: '100%',
           width: '100%',
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        {handleCard(4)}
+        {handleCard()}
       </View>
     </>
   );
