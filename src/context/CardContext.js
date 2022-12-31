@@ -5,90 +5,92 @@ import {useEffect} from 'react';
 import axios from 'axios';
 import {useState} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {set} from 'react-native-reanimated';
 
 export const CardContext = createContext();
 
 export const CardProvider = props => {
   const [numberOfCards, setNumberOfCards] = useState(6);
-  const [data, setData] = useState(null);
   const [cardImages, setCardImages] = useState(null);
   const [cardValue, setCardValue] = useState([]);
-  const [fetchStatus, setFetchStatus] = useState(true);
   const [userSolutions, setUserSolutions] = useState(' ');
-  const [userInput, setUserInput] = useState([]);
   const [cardCode, setCardCode] = useState([]);
   const [pickedCard, setPickedCard] = useState([]);
- 
+  const [shouldBeOperator, setShouldBeOperator] = useState(false);
 
   const handleInput = (value, cardCode) => {
-    if (pickedCard.includes(cardCode)) {
-      alert('You already picked this card');
-    } else {
-      setPickedCard([...pickedCard, cardCode]);
-
-      if (value === 'ACE') {
-        setUserSolutions([...userSolutions, 11]);
-      } else if (value === 'KING' || value === 'QUEEN' || value === 'JACK') {
-        setUserSolutions([...userSolutions, 10]);
+    if (shouldBeOperator === false) {
+      if (pickedCard.includes(cardCode)) {
+        alert('You already picked this card');
       } else {
-        setUserSolutions([...userSolutions, value]);
+        setPickedCard([...pickedCard, cardCode]);
+
+        if (value === 'ACE') {
+          setUserSolutions([...userSolutions, 11]);
+        } else if (value === 'KING' || value === 'QUEEN' || value === 'JACK') {
+          setUserSolutions([...userSolutions, 10]);
+        } else {
+          setUserSolutions([...userSolutions, value]);
+        }
       }
+      setShouldBeOperator(true);
     }
   };
-
-  console.log(numberOfCards);
 
   console.log(pickedCard);
 
-  const handleCardValue = param => {
-    for (let i = 0; i < numberOfCards; i++) {
-      if (param[i] === 'ACE') {
-        setCardValue.push(11);
-      } else if (
-        param[i] === 'KING' ||
-        param[i] === 'QUEEN' ||
-        param[i] === 'JACK'
-      ) {
-        setCardValue.push(10);
-      } else {
-        setCardValue.push(param[i]);
-      }
-    }
-  };
+  // const handleCardValue = (arr1, arr2) => {
+  //   for (let i = 0; i < arr.length; i++) {
+  //     if (arr1[i] == 'ACE') {
+  //       arr2[i].push(11);
+  //     } else if (arr[i] == 'KING' || arr[i] == 'QUEEN' || arr[i] == 'JACK') {
+  //       arr2[i].push(10);
+  //     } else {
+  //       arr2[i].push(arr[i]);
+  //     }
+  //   }
+  // };
+  // const handleCardValue = param => {
+  //   for (let i = 0; i < numberOfCards; i++) {
+  //     if (param[i] === 'ACE') {
+  //       cardValueArr.push(11);
+  //     } else if (
+  //       param[i] === 'KING' ||
+  //       param[i] === 'QUEEN' ||
+  //       param[i] === 'JACK'
+  //     ) {
+  //       cardValueArr.push(10);
+  //     } else {
+  //       cardValueArr.push(param[i]);
+  //     }
+  //   }
+  // };
   useEffect(() => {
-    if (fetchStatus === true) {
-      axios
-        .get(
-          `https://deckofcardsapi.com/api/deck/new/draw/?count=${numberOfCards}`,
-        )
-        .then(res => {
-          let data = [...res.data.cards];
-          console.log(data);
-          setData(data);
+    axios
+      .get(
+        `https://deckofcardsapi.com/api/deck/new/draw/?count=${numberOfCards}`,
+      )
 
-          let cardImages = data.map(card => {
-            return card.image;
-          });
-          setCardImages(cardImages);
+      .then(res => {
+        let data = [...res.data.cards];
 
-          let cardCode = data.map(card => {
-            return card.code;
-          });
-          setCardCode(cardCode);
-          console.log(cardCode);
+        let cardImages = data.map(card => {
+          return card.image;
+        });
+        setCardImages(cardImages);
 
-          let realCardValue = data.map(card => {
-            return card.value;
-          });
-          setCardValue(realCardValue);
-        })
-        .catch(error => {});
-    }
+        let cardCode = data.map(card => {
+          return card.code;
+        });
+        setCardCode(cardCode);
+        // console.log(cardCode);
+
+        let realCardValue = data.map(card => {
+          return card.value;
+        });
+        setCardValue(realCardValue);
+      })
+      .catch(error => {});
   }, []);
-
-  console.log(cardImages);
-  console.log(cardValue);
 
   const handleCard = () => {
     if (cardImages !== null) {
@@ -154,42 +156,43 @@ export const CardProvider = props => {
             </View>
           </>
         );
-      } else if (cardImages.length === 4) {
-        return (
-          <>
-            <View style={{flexDirection: 'row'}}>
-              <Image
-                style={{width: 97.89, height: 136, margin: 5}}
-                source={{uri: cardImages[0]}}
-              />
-              <Image
-                style={{width: 97.89, height: 136, margin: 5}}
-                source={{uri: cardImages[1]}}
-              />
-            </View>
-            <View style={{flexDirection: 'row'}}>
-              <Image
-                style={{width: 97.89, height: 136, margin: 5}}
-                source={{uri: cardImages[2]}}
-              />
-              <Image
-                style={{width: 97.89, height: 136, margin: 5}}
-                source={{uri: cardImages[3]}}
-              />
-            </View>
-            <View
-              style={{
-                backgroundColor: '#13C8EF',
-                height: '10%',
-                width: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <Text>Your Answer</Text>
-            </View>
-          </>
-        );
       }
+      // else if (cardImages.length === 4) {
+      //   return (
+      //     <>
+      //       <View style={{flexDirection: 'row'}}>
+      //         <Image
+      //           style={{width: 97.89, height: 136, margin: 5}}
+      //           source={{uri: cardImages[0]}}
+      //         />
+      //         <Image
+      //           style={{width: 97.89, height: 136, margin: 5}}
+      //           source={{uri: cardImages[1]}}
+      //         />
+      //       </View>
+      //       <View style={{flexDirection: 'row'}}>
+      //         <Image
+      //           style={{width: 97.89, height: 136, margin: 5}}
+      //           source={{uri: cardImages[2]}}
+      //         />
+      //         <Image
+      //           style={{width: 97.89, height: 136, margin: 5}}
+      //           source={{uri: cardImages[3]}}
+      //         />
+      //       </View>
+      //       <View
+      //         style={{
+      //           backgroundColor: '#13C8EF',
+      //           height: '10%',
+      //           width: '100%',
+      //           justifyContent: 'center',
+      //           alignItems: 'center',
+      //         }}>
+      //         <Text>Your Answer</Text>
+      //       </View>
+      //     </>
+      //   );
+      // }
     }
   };
 
