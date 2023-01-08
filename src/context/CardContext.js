@@ -44,13 +44,11 @@ export const CardProvider = props => {
     }
   };
 
-  const handleRealCardValue = param => {
-    if (param === 'ACE') {
-      setRealCardValue([...realCardValue, 11]);
-    } else if (param === 'KING' || param === 'QUEEN' || param === 'JACK') {
-      setRealCardValue([...realCardValue, 10]);
+  const handleImageStatus = (cardCode, imageInactive, imageActive) => {
+    if (pickedCard.includes(cardCode)) {
+      return imageActive;
     } else {
-      setRealCardValue([...realCardValue, param]);
+      return imageInactive;
     }
   };
 
@@ -133,32 +131,6 @@ export const CardProvider = props => {
 
   console.log(userSolutions);
 
-  // const handleCardValue = (arr1, arr2) => {
-  //   for (let i = 0; i < arr.length; i++) {
-  //     if (arr1[i] == 'ACE') {
-  //       arr2[i].push(11);
-  //     } else if (arr[i] == 'KING' || arr[i] == 'QUEEN' || arr[i] == 'JACK') {
-  //       arr2[i].push(10);
-  //     } else {
-  //       arr2[i].push(arr[i]);
-  //     }
-  //   }
-  // };
-  // const handleCardValue = param => {
-  //   for (let i = 0; i < numberOfCards; i++) {
-  //     if (param[i] === 'ACE') {
-  //       cardValueArr.push(11);
-  //     } else if (
-  //       param[i] === 'KING' ||
-  //       param[i] === 'QUEEN' ||
-  //       param[i] === 'JACK'
-  //     ) {
-  //       cardValueArr.push(10);
-  //     } else {
-  //       cardValueArr.push(param[i]);
-  //     }
-  //   }
-  // };
   useEffect(() => {
     axios
       .get(
@@ -203,21 +175,39 @@ export const CardProvider = props => {
                   onPress={() => handleInput(cardValue[0], cardCode[0])}>
                   <Image
                     style={{width: 97.89, height: 136, margin: 5}}
-                    source={{uri: cardImages[0]}}
+                    source={{
+                      uri: handleImageStatus(
+                        cardCode[0],
+                        cardImages[0],
+                        'https://opengameart.org/sites/default/files/card%20back%20red.png',
+                      ),
+                    }}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => handleInput(cardValue[1], cardCode[1])}>
                   <Image
                     style={{width: 97.89, height: 136, margin: 5}}
-                    source={{uri: cardImages[1]}}
+                    source={{
+                      uri: handleImageStatus(
+                        cardCode[1],
+                        cardImages[1],
+                        'https://opengameart.org/sites/default/files/card%20back%20red.png',
+                      ),
+                    }}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => handleInput(cardValue[2], cardCode[2])}>
                   <Image
                     style={{width: 97.89, height: 136, margin: 5}}
-                    source={{uri: cardImages[2]}}
+                    source={{
+                      uri: handleImageStatus(
+                        cardCode[2],
+                        cardImages[2],
+                        'https://opengameart.org/sites/default/files/card%20back%20red.png',
+                      ),
+                    }}
                   />
                 </TouchableOpacity>
               </View>
@@ -226,21 +216,39 @@ export const CardProvider = props => {
                   onPress={() => handleInput(cardValue[3], cardCode[3])}>
                   <Image
                     style={{width: 97.89, height: 136, margin: 5}}
-                    source={{uri: cardImages[3]}}
+                    source={{
+                      uri: handleImageStatus(
+                        cardCode[3],
+                        cardImages[3],
+                        'https://opengameart.org/sites/default/files/card%20back%20red.png',
+                      ),
+                    }}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => handleInput(cardValue[4], cardCode[4])}>
                   <Image
                     style={{width: 97.89, height: 136, margin: 5}}
-                    source={{uri: cardImages[4]}}
+                    source={{
+                      uri: handleImageStatus(
+                        cardCode[4],
+                        cardImages[4],
+                        'https://opengameart.org/sites/default/files/card%20back%20red.png',
+                      ),
+                    }}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => handleInput(cardValue[5], cardCode[5])}>
                   <Image
                     style={{width: 97.89, height: 136, margin: 5}}
-                    source={{uri: cardImages[5]}}
+                    source={{
+                      uri: handleImageStatus(
+                        cardCode[5],
+                        cardImages[5],
+                        'https://opengameart.org/sites/default/files/card%20back%20red.png',
+                      ),
+                    }}
                   />
                 </TouchableOpacity>
               </View>
