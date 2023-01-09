@@ -19,6 +19,7 @@ export const CardProvider = props => {
   const [pickedCard, setPickedCard] = useState([]);
   const [shouldBeOperator, setShouldBeOperator] = useState(false);
   const [solution, setSolution] = useState('');
+  const [fetchStatus, setFetchStatus] = useState(true);
 
   const handleInput = (value, cardCode) => {
     if (shouldBeOperator === false) {
@@ -59,6 +60,8 @@ export const CardProvider = props => {
           Alert.alert('Congratulation', 'You Win', [{text: 'OK'}], {
             cancelable: false,
           });
+          handleReset();
+          setFetchStatus(true);
         } else {
           Alert.alert(
             'Wrong Answer',
@@ -68,7 +71,6 @@ export const CardProvider = props => {
               cancelable: false,
             },
           );
-          console.log(result);
         }
       } else {
         alert('You need to pick all 6 cards');
@@ -111,15 +113,12 @@ export const CardProvider = props => {
       )
       .then(res => {
         setSolution(res.data.equation);
-        console.log(res.data.equation);
-
         Alert.alert('Solution', res.data.equation, [{text: 'OK'}], {
           cancelable: false,
         });
       })
-      .catch(err => {
-        console.log(err);
-      });
+      .catch(err => {});
+    setFetchStatus(true);
   };
 
   // to limit user input
@@ -152,32 +151,32 @@ export const CardProvider = props => {
 
   //to fetch card deck
   useEffect(() => {
-    axios
-      .get(
-        `https://deckofcardsapi.com/api/deck/new/draw/?count=${numberOfCards}`,
-      )
+    if (fetchStatus === true) {
+      axios
+        .get(
+          `https://deckofcardsapi.com/api/deck/new/draw/?count=${numberOfCards}`,
+        )
 
-      .then(res => {
-        let data = [...res.data.cards];
+        .then(res => {
+          let data = [...res.data.cards];
+          let cardImages = data.map(card => {
+            return card.image;
+          });
+          setCardImages(cardImages);
+          let cardCode = data.map(card => {
+            return card.code;
+          });
+          setCardCode(cardCode);
+          let realCardValue = data.map(card => {
+            return card.value;
+          });
+          setCardValue(realCardValue);
+        })
+        .catch(error => {});
 
-        let cardImages = data.map(card => {
-          return card.image;
-        });
-        setCardImages(cardImages);
-
-        let cardCode = data.map(card => {
-          return card.code;
-        });
-        setCardCode(cardCode);
-        // console.log(cardCode);
-
-        let realCardValue = data.map(card => {
-          return card.value;
-        });
-        setCardValue(realCardValue);
-      })
-      .catch(error => {});
-  }, []);
+      setFetchStatus(false);
+    }
+  }, [fetchStatus]);
 
   // to render card deck and keyboard
   const handleCard = () => {
