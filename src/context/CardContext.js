@@ -7,8 +7,6 @@ import {useState} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {StyleSheet} from 'react-native';
 import {ImageBackground} from 'react-native';
-import {NavigationHelpersContext} from '@react-navigation/native';
-import useNavigation from '@react-navigation/native';
 
 export const CardContext = createContext();
 
@@ -21,7 +19,6 @@ export const CardProvider = props => {
   const [pickedCard, setPickedCard] = useState([]);
   const [shouldBeOperator, setShouldBeOperator] = useState(false);
   const [solution, setSolution] = useState('');
-  const [fetchStatus, setFetchStatus] = useState(false);
 
   const handleInput = (value, cardCode) => {
     if (shouldBeOperator === false) {
@@ -44,6 +41,7 @@ export const CardProvider = props => {
     }
   };
 
+  // to change card image when picked
   const handleImageStatus = (cardCode, imageInactive, imageActive) => {
     if (pickedCard.includes(cardCode)) {
       return imageActive;
@@ -52,20 +50,42 @@ export const CardProvider = props => {
     }
   };
 
+  // to check user solutions
   const handleCalculate = () => {
-    if (pickedCard.length === 6) {
-      let result = eval(userSolutions.join(''));
-      if (result === 24) {
-        alert('You win');
+    try {
+      if (pickedCard.length === 6) {
+        let result = eval(userSolutions.join(''));
+        if (result === 24) {
+          Alert.alert('Congratulation', 'You Win', [{text: 'OK'}], {
+            cancelable: false,
+          });
+        } else {
+          Alert.alert(
+            'Wrong Answer',
+            'Your solution should return a value of 24',
+            [{text: 'OK'}],
+            {
+              cancelable: false,
+            },
+          );
+          console.log(result);
+        }
       } else {
-        alert('Worng Answer');
-        console.log(result);
+        alert('You need to pick all 6 cards');
       }
-    } else {
-      alert('You need to pick all 6 cards');
+    } catch (error) {
+      Alert.alert(
+        'Error',
+        'Please use proper mathematical operation rules',
+        [{text: 'OK'}],
+        {
+          cancelable: false,
+        },
+      );
     }
   };
-  console.log(cardValue);
+
+  // to define Card Value
   var realCardValue = [];
   if (cardValue !== null) {
     for (let i = 0; i < cardValue.length; i++) {
@@ -83,8 +103,7 @@ export const CardProvider = props => {
     }
   }
 
-  console.log('ini real', realCardValue);
-
+  // to get solution
   const handleSeeSolution = () => {
     axios
       .get(
@@ -103,6 +122,7 @@ export const CardProvider = props => {
       });
   };
 
+  // to limit user input
   const handleOperator = operator => {
     if (shouldBeOperator === true) {
       if (operator === 'X') {
@@ -123,14 +143,14 @@ export const CardProvider = props => {
     }
   };
 
+  // to reset user solution
   const handleReset = () => {
     setUserSolutions('');
     setPickedCard([]);
     setShouldBeOperator(false);
   };
 
-  console.log(userSolutions);
-
+  //to fetch card deck
   useEffect(() => {
     axios
       .get(
@@ -159,6 +179,7 @@ export const CardProvider = props => {
       .catch(error => {});
   }, []);
 
+  // to render card deck and keyboard
   const handleCard = () => {
     if (cardImages !== null) {
       if (cardImages.length === 6) {
@@ -174,7 +195,7 @@ export const CardProvider = props => {
                 <TouchableOpacity
                   onPress={() => handleInput(cardValue[0], cardCode[0])}>
                   <Image
-                    style={{width: 97.89, height: 136, margin: 5}}
+                    style={styles.card}
                     source={{
                       uri: handleImageStatus(
                         cardCode[0],
@@ -187,7 +208,7 @@ export const CardProvider = props => {
                 <TouchableOpacity
                   onPress={() => handleInput(cardValue[1], cardCode[1])}>
                   <Image
-                    style={{width: 97.89, height: 136, margin: 5}}
+                    style={styles.card}
                     source={{
                       uri: handleImageStatus(
                         cardCode[1],
@@ -200,7 +221,7 @@ export const CardProvider = props => {
                 <TouchableOpacity
                   onPress={() => handleInput(cardValue[2], cardCode[2])}>
                   <Image
-                    style={{width: 97.89, height: 136, margin: 5}}
+                    style={styles.card}
                     source={{
                       uri: handleImageStatus(
                         cardCode[2],
@@ -215,7 +236,7 @@ export const CardProvider = props => {
                 <TouchableOpacity
                   onPress={() => handleInput(cardValue[3], cardCode[3])}>
                   <Image
-                    style={{width: 97.89, height: 136, margin: 5}}
+                    style={styles.card}
                     source={{
                       uri: handleImageStatus(
                         cardCode[3],
@@ -228,7 +249,7 @@ export const CardProvider = props => {
                 <TouchableOpacity
                   onPress={() => handleInput(cardValue[4], cardCode[4])}>
                   <Image
-                    style={{width: 97.89, height: 136, margin: 5}}
+                    style={styles.card}
                     source={{
                       uri: handleImageStatus(
                         cardCode[4],
@@ -241,7 +262,7 @@ export const CardProvider = props => {
                 <TouchableOpacity
                   onPress={() => handleInput(cardValue[5], cardCode[5])}>
                   <Image
-                    style={{width: 97.89, height: 136, margin: 5}}
+                    style={styles.card}
                     source={{
                       uri: handleImageStatus(
                         cardCode[5],
@@ -368,7 +389,9 @@ export const CardProvider = props => {
                     </TouchableOpacity>
                     <TouchableOpacity
                       style={{padding: 5}}
-                      onPress={() => handleCalculate()}>
+                      onPress={() => {
+                        handleCalculate();
+                      }}>
                       <View
                         style={{
                           width: 140,
@@ -401,21 +424,21 @@ export const CardProvider = props => {
       //     <>
       //       <View style={{flexDirection: 'row'}}>
       //         <Image
-      //           style={{width: 97.89, height: 136, margin: 5}}
+      //           style={styles.card}
       //           source={{uri: cardImages[0]}}
       //         />
       //         <Image
-      //           style={{width: 97.89, height: 136, margin: 5}}
+      //           style={styles.card}
       //           source={{uri: cardImages[1]}}
       //         />
       //       </View>
       //       <View style={{flexDirection: 'row'}}>
       //         <Image
-      //           style={{width: 97.89, height: 136, margin: 5}}
+      //           style={styles.card}
       //           source={{uri: cardImages[2]}}
       //         />
       //         <Image
-      //           style={{width: 97.89, height: 136, margin: 5}}
+      //           style={styles.card}
       //           source={{uri: cardImages[3]}}
       //         />
       //       </View>
@@ -452,6 +475,13 @@ export const CardProvider = props => {
 };
 
 const styles = StyleSheet.create({
+  card: {
+    width: 97.89,
+    height: 136,
+    margin: 5,
+    borderRadius: 5,
+  },
+
   button: {
     width: 45,
     height: 45,
