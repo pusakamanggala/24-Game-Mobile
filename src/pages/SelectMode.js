@@ -1,8 +1,7 @@
 import React from 'react';
 import {View, Text, Image, ImageBackground} from 'react-native';
 import GameModeButton from '../components/GameModeButton';
-import {CardContext, CardProvider} from '../context/CardContext';
-import {useContext} from 'react';
+import {CardProvider} from '../context/CardContext';
 
 const SelectMode = () => {
   return (

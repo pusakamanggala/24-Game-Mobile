@@ -2,11 +2,8 @@ import React from 'react';
 import {View, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {StyleSheet} from 'react-native';
-import {useContext} from 'react';
-import {CardContext} from '../context/CardContext';
 
 const Keyboard = () => {
-  const {handleOperator, handleInput} = useContext(CardContext);
   return (
     <View
       style={{
