@@ -1,6 +1,6 @@
 import React from 'react';
 import MainMenuButton from '../components/MainMenuButton';
-import {View, Text, Image, ImageBackground} from 'react-native';
+import {View, Image, ImageBackground} from 'react-native';
 
 const MainMenu = () => {
   return (
