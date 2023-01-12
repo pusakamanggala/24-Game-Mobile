@@ -12,7 +12,7 @@ const MainMenuButton = () => {
           <Text style={styles.buttonTitle}>Play Game</Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Tutorial')}>
         <View style={styles.buttonAlt}>
           <Text style={styles.buttonTitleAlt}>How To Play</Text>
         </View>
