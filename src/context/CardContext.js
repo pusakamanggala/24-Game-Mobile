@@ -57,9 +57,14 @@ export const CardProvider = props => {
       if (pickedCard.length === 6) {
         let result = eval(userSolutions.join(''));
         if (result === 24) {
-          Alert.alert('Congratulation', 'You Win', [{text: 'OK'}], {
-            cancelable: false,
-          });
+          Alert.alert(
+            'Congratulation',
+            'Your answers is correct',
+            [{text: 'OK'}],
+            {
+              cancelable: false,
+            },
+          );
           handleReset();
           setFetchStatus(true);
         } else {
