@@ -1,11 +1,7 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View} from 'react-native';
 import CardDeck from '../components/CardDeck';
 import {CardProvider} from '../context/CardContext';
-import {ImageBackground} from 'react-native';
-import Keyboard from '../components/Keyboard';
-import {CardContext} from '../context/CardContext';
-import {useContext} from 'react';
 
 const Gameplay = () => {
   return (
